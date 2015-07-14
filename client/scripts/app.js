@@ -3,11 +3,10 @@ var app = {
    server:'https://api.parse.com/1/classes/chatterbox',
 }
 
-app.init = function(){};
-
-$('.reload').on('click', function(){
+app.init = function(){
    app.fetch();
-})
+};
+
 
 app.send = function(message){
    $.ajax({
@@ -17,9 +16,7 @@ app.send = function(message){
      data: JSON.stringify(message),
      contentType: 'application/json',
      success: function (data) {
-       console.log('chatterbox: Message sent' + JSON.stringify(data) + console.dir(data));
-       app.addMessage(data);
-       $('#chats').append('<div class="message">' + data.createdAt + data.objectId + '</div>')
+       console.log('chatterbox: Message sent');
      },
      error: function (data) {
        // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -36,7 +33,7 @@ app.fetch = function(message){
      data: JSON.stringify(message),
      contentType: 'application/json',
      success: function (data) {
-       console.log('chatterbox: Message received' + console.log(data));
+       console.log('chatterbox: Message received');
        var info = data.results;
        for(var i = 0; i < 10; i++){
          $('#chats').append('<div class="message">' + info[i].username + '<br>'+'<br>' + info[i].text + '</div>');
@@ -54,10 +51,6 @@ app.addMessage = function(message){
    var text = message.text;
    var room = message.roomname;
    $('#chats').append('<div class="message">' + user + text + room +'</div>') 
-
-   $('.addMessage').on('click', function(){
-      $('.input').val().append('<div class="message">'+ text +'</div>')
-   })
 };
 
 app.clearMessages = function(){
@@ -69,3 +62,46 @@ app.addFriend = function(){};
 app.addRoom = function(){
    $('#roomSelect').append('<div class="room">' + this.room + '</div>')
 };
+
+app.handle = function(text, username){
+   var obj = {
+      text : text,
+      username : username
+   }
+   app.send(obj);
+}
+
+$(document).ready(function(){
+   app.init();
+//sends when button is clicked
+   $('.addMessage').on('click', function(){
+      var speak = $('.input').val();
+      var user = $('.username').val();
+      app.handle(speak, user);
+   });
+//sends when enter key is pressed
+   $('.input').keypress(function(e){
+      var key = e.which || e.keyCode;
+      if (key === 13) {
+         app.handle(speak, user);
+      }
+   })
+//sends when enter key is pressed
+   $('.username').keypress(function(e){
+      var key = e.which || e.keyCode;
+      if (key === 13) {
+         app.handle(speak, user);
+      }
+   })
+
+   // setInterval(function () {
+   //     app.fetch();
+   // console.log('Refreshing')
+   //   }, 3000);
+
+   $('.reload').on('click', function(e){
+      e.preventDefault();
+      app.clearMessages();
+      app.fetch();
+   })
+})

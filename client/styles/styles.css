@@ -82,3 +82,21 @@ form input[type=text] {
 .spinner img {
     padding: 10px;
 }
+
+.input{
+    width: 700px;
+    height: 20px;
+}
+
+.addMessage{
+    width: 50px;
+    height: 30px;
+    float: right;
+}
+
+.message{
+    margin-bottom: 15px;
+    background-color: gray;
+    border-radius: 5px; 
+    text-align: center;    
+}

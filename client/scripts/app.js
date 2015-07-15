@@ -73,34 +73,19 @@ app.handle = function(text, username){
 
 $(document).ready(function(){
    app.init();
-//sends when button is clicked
+//sends username and message when button is clicked
    $('.addMessage').on('click', function(){
       var speak = $('.input').val();
       var user = $('.username').val();
       app.handle(speak, user);
    });
-//sends when enter key is pressed
-   $('.input').keypress(function(e){
-      var key = e.which || e.keyCode;
-      if (key === 13) {
-         app.handle(speak, user);
-      }
-   })
-//sends when enter key is pressed
-   $('.username').keypress(function(e){
-      var key = e.which || e.keyCode;
-      if (key === 13) {
-         app.handle(speak, user);
-      }
-   })
 
    // setInterval(function () {
    //     app.fetch();
    // console.log('Refreshing')
    //   }, 3000);
 
-   $('.reload').on('click', function(e){
-      e.preventDefault();
+   $('.reload').on('click', function(){
       app.clearMessages();
       app.fetch();
    })

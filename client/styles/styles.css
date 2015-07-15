@@ -88,7 +88,7 @@ form input[type=text] {
     height: 20px;
 }
 
-.addMessage{
+.addMessage .reload{
     width: 50px;
     height: 30px;
     float: right;
